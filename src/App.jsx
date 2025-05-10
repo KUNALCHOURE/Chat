@@ -8,26 +8,19 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='h-screen w-screen bg-black text-white '>
+        
+        <div className="header w-full flex justify-center border-b-2 ">
+          <h1 className='font-extrabold text-3xl'>Chat bot </h1>
+        </div>
+      
+      <div className='w-full h-full flex justify-center items-center '>
+        <div className='h-1/2 w-1/2 text-center border-2'>       
+            <h1 className='text-2xl font-bold '>AI assistant </h1>
+        </div>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
