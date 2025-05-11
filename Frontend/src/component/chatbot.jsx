@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaPaperPlane, FaRobot, FaUser } from 'react-icons/fa';
+import api from '../../services/api';
 
 const ChatBot = () => {
     const [messages, setMessages] = useState([]);
@@ -21,9 +22,18 @@ const ChatBot = () => {
 
         const userMessage = inputMessage.trim();
         setInputMessage('');
+       
         setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
         setIsLoading(true);
+        const response=await api.post("/chat",{
+            question:inputMessage
+        }
+         
+        );
+       
 
+        setMessages(prev=>[...prev,{text:response.data.response,sender:"AI"}]);
+        setIsLoading(false);
       
     };
 
