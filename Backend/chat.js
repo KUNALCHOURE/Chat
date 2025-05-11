@@ -11,7 +11,7 @@ const client = new OpenAI({
 
 const chatwithai=async(req,res)=>{
     try{
-    const question=req.body;
+    const {question}=req.body;
 
 const response = await client.chat.completions.create({
     model: "gpt-4",
