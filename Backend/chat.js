@@ -11,6 +11,7 @@ const client = new OpenAI({
 
 const chatwithai=async(req,res)=>{
     try{
+        console.log("in the controller")
     const {question}=req.body;
 
 const response = await client.chat.completions.create({
