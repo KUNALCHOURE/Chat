@@ -28,7 +28,7 @@ const ChatBot = () => {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-16rem)] bg-[#0B1120] rounded-xl overflow-hidden border border-gray-700">
+        <div className="flex flex-col h-[calc(100vh-16rem)] bg-[#0B1120] rounded-xl overflow-hidden border border-gray-700 ">
             {/* Chat Messages */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {messages.length === 0 && (
