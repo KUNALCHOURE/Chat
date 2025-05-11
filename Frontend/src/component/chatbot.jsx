@@ -1,35 +1,107 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react';
+import { FaPaperPlane, FaRobot, FaUser } from 'react-icons/fa';
 
-export default function Chatbot() {
-  return (
-      <div className='h-screen w-screen bg-black text-white '>
-        
-        <div className="header w-full flex justify-center border-b-2 ">
-          <h1 className='font-extrabold text-3xl'>Chat bot </h1>
-        </div>
+const ChatBot = () => {
+    const [messages, setMessages] = useState([]);
+    const [inputMessage, setInputMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+        if (!inputMessage.trim()) return;
+
+        const userMessage = inputMessage.trim();
+        setInputMessage('');
+        setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+        setIsLoading(true);
+
       
-      <div className='w-full h-4/5  flex justify-center  relative  '>
-        <div className=' absolute h-3/4 w-1/2 text-center border-2 top-20 '>       
-            <h1 className='text-2xl font-bold '>AI assistant </h1>
-            <hr />
-<div className="input absolute bottom-4 w-full left-0">
-  <div className="flex items-center bg-gray-200 rounded-2xl px-6 py-2">
-    <input
-      type="text"
-      className="flex-1 bg-transparent outline-none text-black"
-      placeholder="Type your message"
-    />
-    <i
-      className="far fa-paper-plane text-white bg-blue-600 cursor-pointer rounded-full p-2 ml-2"
-      // You can also add onClick handler here for send action
-    />
-  </div>
-</div>
+    };
 
+    return (
+        <div className="flex flex-col h-[calc(100vh-16rem)] bg-[#0B1120] rounded-xl overflow-hidden border border-gray-700">
+            {/* Chat Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                {messages.length === 0 && (
+                    <div className="text-center text-gray-400 mt-8">
+                        <FaRobot className="mx-auto text-4xl mb-3 text-blue-500" />
+                        <p className="text-lg">Hi! I'm your AI assistant.</p>
+                        <p className="text-sm">How can I help you today?</p>
+                    </div>
+                )}
+                
+                {messages.map((message, index) => (
+                    <div
+                        key={index}
+                        className={`flex items-start space-x-3 ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}
+                    >
+                        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                            message.sender === 'user' ? 'bg-blue-500' : 'bg-gray-600'
+                        }`}>
+                            {message.sender === 'user' ? <FaUser className="text-sm text-white" /> : <FaRobot className="text-sm text-white" />}
+                        </div>
+                        <div className={`flex max-w-[80%] ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                            <div className={`rounded-2xl px-4 py-3 ${
+                                message.sender === 'user' 
+                                    ? 'bg-blue-500 text-white' 
+                                    : 'bg-gray-800 text-gray-100'
+                            }`}>
+                                <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {isLoading && (
+                    <div className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                            <FaRobot className="text-sm text-white" />
+                        </div>
+                        <div className="bg-gray-800 rounded-2xl px-4 py-3">
+                            <div className="flex space-x-2">
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
+            </div>
+
+            {/* Message Input */}
+            <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-700 bg-[#0B1120]">
+                <div className="flex space-x-4">
+                    <input
+                        type="text"
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        placeholder="Type your message..."
+                        className="flex-1 bg-gray-800 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700"
+                    />
+                    <button
+                        type="submit"
+                        disabled={!inputMessage.trim() || isLoading}
+                        className={`px-6 py-3 rounded-xl flex items-center justify-center ${
+                            !inputMessage.trim() || isLoading
+                                ? 'bg-gray-700 cursor-not-allowed'
+                                : 'bg-blue-500 hover:bg-blue-600'
+                        } transition-colors duration-200`}
+                    >
+                        <FaPaperPlane className="text-white" />
+                    </button>
+                </div>
+            </form>
         </div>
-        
+    );
+};
 
-      </div>
-      </div>
-  )
-}
+export default ChatBot; 
